@@ -1,0 +1,11 @@
+version: 2
+models:
+  - name: fct_daily_sales
+    description: Daily sales metrics at the date grain
+    columns:
+      - name: sales_date
+        tests: [not_null, unique]
+      - name: gross_revenue
+        tests: [not_null]
+      - name: orders
+        tests: [not_null]

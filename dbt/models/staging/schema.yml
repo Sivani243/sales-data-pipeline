@@ -1,0 +1,13 @@
+version: 2
+models:
+  - name: src_orders
+    description: Cleanly typed view over raw.orders
+    columns:
+      - name: order_id
+        tests: [not_null]
+      - name: order_line_id
+        tests: [not_null]
+      - name: order_ts
+        tests: [not_null]
+      - name: quantity
+        tests: [not_null]

@@ -1,0 +1,12 @@
+sales_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: postgres
+      user: analytics
+      password: analytics_pw
+      dbname: warehouse
+      schema: analytics
+      threads: 4
+      port: 5432

@@ -1,0 +1,21 @@
+name: sales_analytics
+version: 1.0.0
+config-version: 2
+profile: sales_analytics
+
+model-paths: ["models"]
+
+models:
+  sales_analytics:
+    +persist_docs:
+      relation: true
+      columns: true
+    staging:
+      +schema: staging
+      +materialized: view
+    intermediate:
+      +schema: intermediate
+      +materialized: table
+    marts:
+      +schema: marts
+      +materialized: table

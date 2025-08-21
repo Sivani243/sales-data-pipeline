@@ -1,0 +1,7 @@
+version: 2
+models:
+  - name: orders_enriched
+    description: Completed order lines with computed line_amount
+    columns:
+      - name: line_amount
+        tests: [not_null]
