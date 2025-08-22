@@ -4,6 +4,7 @@ config-version: 2
 profile: sales_analytics
 
 model-paths: ["models"]
+snapshot-paths: ["snapshots"]
 
 models:
   sales_analytics:

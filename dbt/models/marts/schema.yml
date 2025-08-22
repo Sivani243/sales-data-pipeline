@@ -1,11 +1,21 @@
 version: 2
+
 models:
   - name: fct_daily_sales
-    description: Daily sales metrics at the date grain
+    description: "Daily sales fact (incremental)"
     columns:
       - name: sales_date
         tests: [not_null, unique]
-      - name: gross_revenue
-        tests: [not_null]
       - name: orders
         tests: [not_null]
+      - name: gross_revenue
+        tests: [not_null]
+
+  - name: dim_customer
+    description: "Current SCD2 customer dimension from snapshots"
+    columns:
+      - name: customer_id
+        tests: [not_null]
+      - name: status
+      - name: country
+      - name: valid_from

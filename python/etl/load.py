@@ -50,5 +50,6 @@ def copy_dataframe(df: pd.DataFrame):
             ) FROM STDIN WITH (FORMAT CSV, HEADER TRUE)
         """, buf)
         cur.execute("INSERT INTO raw.orders SELECT * FROM tmp_orders;")
+        cur.execute("DROP TABLE tmp_orders;")
         conn.commit()
     logger.info(f"Loaded {len(df):,} rows into raw.orders\n")

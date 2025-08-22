@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   postgres:
     image: postgres:15
@@ -14,14 +12,20 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-analytics} -d ${POSTGRES_DB:-warehouse}"]
       interval: 5s
-      retries: 10
+      timeout: 5s
+      retries: 20
     volumes:
       - pg_data:/var/lib/postgresql/data
       - ./postgres/init:/docker-entrypoint-initdb.d
 
   python-app:
-    build: ./python
+    build:
+      context: ./python
+      dockerfile: Dockerfile
     container_name: sales_python
+    depends_on:
+      postgres:
+        condition: service_healthy
     environment:
       DB_HOST: postgres
       DB_PORT: 5432
@@ -29,16 +33,19 @@ services:
       DB_USER: ${POSTGRES_USER:-analytics}
       DB_PASSWORD: ${POSTGRES_PASSWORD:-analytics_pw}
       DATA_SOURCE_PATH: /app/data/example_sales.csv
-      ROWS: 5000
-    depends_on:
-      postgres:
-        condition: service_healthy
+      ROWS: ${ROWS:-5000}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
     volumes:
       - ./data:/app/data
 
   dbt:
-    build: ./dbt
+    build:
+      context: ./dbt
+      dockerfile: Dockerfile
     container_name: sales_dbt
+    depends_on:
+      postgres:
+        condition: service_healthy
     environment:
       DBT_HOST: postgres
       DBT_PORT: 5432
@@ -47,9 +54,21 @@ services:
       DBT_PASSWORD: ${POSTGRES_PASSWORD:-analytics_pw}
       DBT_SCHEMA: analytics
       DBT_THREADS: 4
-    depends_on:
-      postgres:
-        condition: service_healthy
+    working_dir: /usr/app
+    volumes:
+      - ./dbt:/usr/app         # ensures models & docs (target/) are visible on host
+    ports:
+      - "8080:8080"            # for `dbt docs serve` (optional)
+
+  metabase:
+   image: metabase/metabase:latest
+   container_name: sales_metabase
+   ports:
+    - "3000:3000"
+   depends_on:
+    postgres:
+      condition: service_healthy
+
 
 volumes:
   pg_data:
