@@ -23,7 +23,7 @@ def main():
         logger.info(f"Validated rows: {len(df):,}\n")
         ensure_table()
         copy_dataframe(df)
-        logger.info("ETL completed successfully ✅\n")
+        logger.info("ETL completed successfully \n")
     except Exception as e:
         logger.exception(f"ETL failed: {e}")
         sys.exit(1)
