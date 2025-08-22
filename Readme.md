@@ -116,6 +116,15 @@ docker compose run --rm -p 8080:8080 dbt bash -lc "dbt docs generate && dbt docs
 - **dbt tests** – `not_null`, `unique`, accepted values
 - **Orchestration checks** – Waits for Postgres health before continuing
 
+
+## Visulize Data
+To visualize the data and view Graphs, Metabase can be accessed from
+and port can be accesson http://localhost:3000/
+
+```bash
+docker compose up metabase
+```
+
 ## Project Structure
 
 ```
