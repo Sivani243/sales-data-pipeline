@@ -52,7 +52,15 @@ LOG_LEVEL=INFO
 
 ### Windows (PowerShell)
 ```powershell
+
+
 .\orchestration\run_pipeline.ps1
+
+if you face Execution policy Error.
+
+Copy-Item .env.example .env -ErrorAction SilentlyContinue                            
+>> Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+>> .\orchestration\run_pipeline.ps1 -d
 ```
 
 This will:
@@ -137,7 +145,3 @@ This project demonstrates a modular, reproducible, and testable data pipeline. I
 **Contributing**
 
 Feel free to submit issues and enhancement requests!
-
-**License**
-
-This project is licensed under the MIT License.
